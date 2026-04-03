@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException, Query
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 import shutil
 import uuid
@@ -11,6 +12,13 @@ app = FastAPI(
     title="OCR Form API",
     description="API d'analyse de formulaires médicaux par OCR",
     version="1.0.0"
+)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # ou mets ton domaine frontend exact
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 UPLOAD_DIR = Path("/tmp/uploads")
