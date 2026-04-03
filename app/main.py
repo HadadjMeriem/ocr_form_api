@@ -55,7 +55,8 @@ async def analyze_image(
             shutil.copyfileobj(image.file, buffer)
 
         result = analyze_form(str(temp_path), debug=debug)
-
+        print(f"=== RESULTAT OCR POUR {image.filename} ===")
+        print(result)
         return JSONResponse(content={
             "success": True,
             "filename": image.filename,
