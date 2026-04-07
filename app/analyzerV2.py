@@ -441,7 +441,7 @@ def map_pathology(s):
 # EXTRACTION PRINCIPALE
 # =========================================================
 
-def analyze_form_v2(image_path, include_date=False, minimal=True):
+def analyze_form_v2(image_path, include_date=False, minimal=True,debug=False):
     init_template_cache()
 
     img = cv2.imread(str(image_path))
