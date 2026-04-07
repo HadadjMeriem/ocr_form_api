@@ -7,7 +7,7 @@ import uuid
 import os
 
 from app.analyzer import analyze_form
-
+from app.analyzerV2 import analyze_form_v2
 app = FastAPI(
     title="OCR Form API",
     description="API d'analyse de formulaires médicaux par OCR",
