@@ -84,3 +84,46 @@ async def analyze_image(
             image.file.close()
         except Exception:
             pass
+@app.post("/analyze-v2")
+async def analyze_image_v2(
+    image: UploadFile = File(...),
+    debug: bool = Query(default=False)
+):
+    if not image.filename:
+        raise HTTPException(status_code=400, detail="Nom de fichier invalide")
+
+    ext = Path(image.filename).suffix.lower()
+    if ext not in ALLOWED_EXTENSIONS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Format non supporté. Formats acceptés: {sorted(ALLOWED_EXTENSIONS)}"
+        )
+
+    temp_filename = f"{uuid.uuid4()}{ext}"
+    temp_path = UPLOAD_DIR / temp_filename
+
+    try:
+        with temp_path.open("wb") as buffer:
+            shutil.copyfileobj(image.file, buffer)
+
+        result = analyze_form_v2(str(temp_path), debug=debug)
+
+        return JSONResponse(content={
+            "success": True,
+            "filename": image.filename,
+            "result": result
+        })
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        try:
+            if temp_path.exists():
+                os.remove(temp_path)
+        except Exception:
+            pass
+        try:
+            image.file.close()
+        except Exception:
+            pass
