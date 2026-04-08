@@ -409,7 +409,7 @@ def map_sex(sexe):
     if not sexe:
         return "M"
     s = sexe.lower().strip()
-    if "fem" in s:
+    if "fém" in s:
         return "F"
     return "M"
 
